@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>ajax練習中</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet">
+    </head>
+    <body>
+        <h2>記事一覧</h2>
+        {% for article in articles %}
+        <h2>{{ article.title }}</h2>
+            <div class="like-outer">
+                {% include 'sample/like.html'%}
+            </div>
+            <hr>
+        {% endfor %}
+    </body>
+    <script type="text/javascript">
+        $(document).ready(function(event){
+            $(document).on('click', '#like', function(event){
+                event.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'like' %}",
+                    data: {
+                        'article_id': $(this).attr('name'),
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                    dataType: 'json',
+                    success: function(response){
+                        selector = document.getElementsByName(response.article_id);
+                        //cssも変更しないとcssが変更されない。
+                        // いいねしている状態　htmlを挿入
+                        if(response.liked){
+                            $(selector).html("<i class='fas fa-lg fa-heart'></i>");
+                            $(selector).css('color', 'red');
+                        }
+                        // いいねしていない状態　htmlを挿入
+                        else {
+                            $(selector).html("<i class='far fa-lg fa-heart'></i>");
+                            $(selector).css('color', 'black');
+                        }
+                        selector2 = document.getElementsByName(response.article_id + "-count");
+                        $(selector2).text(response.count);
+                    }
+
+                });
+            });
+        });
+
+    </script>
+</html>
