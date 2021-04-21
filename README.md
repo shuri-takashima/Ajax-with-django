@@ -7,7 +7,11 @@ setuptools 54.2.0
 sqlparse   0.4.1  
 
 ***
-djangoでajaxの処理について  
-sample appを作成.
+djangoでajaxの処理について 
+
+#sample app
 いいねボタンを非同期処理を行い、fontawesomeのハートマークを色に変化をつける。
-そして、いいね数も変化させる。
+そして、いいね数も変化させる。  
+
+#sample2 app
+コメントするとページ遷移せずにコメントモデルを保存し、コメントを追加していく.
